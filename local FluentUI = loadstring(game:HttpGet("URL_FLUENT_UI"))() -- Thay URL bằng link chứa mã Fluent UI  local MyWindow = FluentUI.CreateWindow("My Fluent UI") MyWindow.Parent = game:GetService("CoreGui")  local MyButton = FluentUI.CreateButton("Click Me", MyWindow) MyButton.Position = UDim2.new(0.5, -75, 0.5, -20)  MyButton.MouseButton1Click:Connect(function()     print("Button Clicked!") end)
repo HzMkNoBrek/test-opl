@@ -1,0 +1,11 @@
+local FluentUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/HzMkNoBrek/test-opl/refs/heads/main/fluendgui"))()
+
+local MyWindow = FluentUI.CreateWindow("My Fluent UI")
+MyWindow.Parent = game:GetService("CoreGui")
+
+local MyButton = FluentUI.CreateButton("Click Me", MyWindow)
+MyButton.Position = UDim2.new(0.5, -75, 0.5, -20)
+
+MyButton.MouseButton1Click:Connect(function()
+    print("Button Clicked!")
+end)
