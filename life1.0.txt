@@ -3219,19 +3219,19 @@ Tabs.PlayerTab:AddButton({
         for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
             table.insert(newPlayerList, player.Name)
         end
-        
-if MultiDropdown then
-            MultiDropdown:SetValues(newPlayerList)
-        else
-            MultiDropdown = Tabs.PlayerTab:AddDropdown({
-                Title = "Select Player",
-                Values = newPlayerList,
-                Multi = false,
-                Callback = function(value)
-                    print("Selected Player: " .. value)
-                end
-            })
+
+        if MultiDropdown then
+            MultiDropdown:Destroy()
         end
+
+        MultiDropdown = Tabs.PlayerTab:AddDropdown({
+            Title = "Select Player",
+            Values = newPlayerList,
+            Multi = false,
+            Callback = function(value)
+                print("Selected Player: " .. value)
+            end
+        })
     end
 })
 
