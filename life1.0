@@ -2409,6 +2409,7 @@ Tabs.MiscTab:AddToggle("Toggle", {
 })
 
 local Section = Tabs.PlayerTab:AddSection("Player Utilities")
+local PlayerList = {}
 
 local function updatePlayerList()
     local newPlayerList = {}
@@ -2416,15 +2417,15 @@ local function updatePlayerList()
         table.insert(newPlayerList, player.Name)
     end
     PlayerList = newPlayerList
+    Dropdown.Values = PlayerList -- Cập nhật danh sách trong Dropdown
+end
 
 game.Players.PlayerAdded:Connect(function()
-    PlayerList = updatePlayerList()
-    Dropdown.Values = PlayerList
+    updatePlayerList()
 end)
 
 game.Players.PlayerRemoving:Connect(function()
-    PlayerList = updatePlayerList()
-    Dropdown.Values = PlayerList
+    updatePlayerList()
 end)
 
 Tabs.PlayerTab:AddButton({
