@@ -109,8 +109,7 @@ L2.InputEnded:Connect(function(input)
 end)
 
 local function isCharacterLoaded()
-    local character = player.Character
-    return character and character.Parent ~= nil
+    return player.Character ~= nil and player.Character.Parent ~= nil
 end
 
 L2.Activated:Connect(function()
@@ -118,9 +117,15 @@ L2.Activated:Connect(function()
         if not isCharacterLoaded() then
             player.CharacterAdded:Wait() -- Chờ nhân vật hồi sinh nếu chưa load
         end
+        task.wait(0.1)
         VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game)
         sound:Play()
     end
+end)
+
+player.CharacterAdded:Connect(function()
+    task.wait(1)
+    L2.Parent = L1
 end)
 
 local Section = Tabs.MainTab:AddSection("Main Utilities")
