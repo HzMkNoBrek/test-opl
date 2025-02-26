@@ -47,14 +47,13 @@ Fluent:Notify({
 })
 
 local CoreGui = game:GetService("CoreGui")
+local UserInputService = game:GetService("UserInputService")
+local ContextActionService = game:GetService("ContextActionService")
+local player = game.Players.LocalPlayer
 
 if CoreGui:FindFirstChild("MainGui") then
     return
 end
-
-local player = game.Players.LocalPlayer
-local UserInputService = game:GetService("UserInputService")
-local VirtualInputManager = game:GetService("VirtualInputManager")
 
 local L1 = Instance.new("ScreenGui")
 local L2 = Instance.new("TextButton")
@@ -108,18 +107,18 @@ L2.InputEnded:Connect(function(input)
     end
 end)
 
-local function isCharacterLoaded()
-    return player.Character ~= nil and player.Character.Parent ~= nil
+local function activateLeftControl()
+    ContextActionService:BindAction("FakeLeftControl", function()
+        UserInputService:SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game)
+        sound:Play()
+    end, false, Enum.KeyCode.LeftControl)
+
+    ContextActionService:GetButton("FakeLeftControl"):Activate()
 end
 
 L2.Activated:Connect(function()
     if not dragging then
-        if not isCharacterLoaded() then
-            player.CharacterAdded:Wait() -- Chờ nhân vật hồi sinh nếu chưa load
-        end
-        task.wait(0.1)
-        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game)
-        sound:Play()
+        activateLeftControl()
     end
 end)
 
