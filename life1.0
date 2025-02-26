@@ -50,7 +50,7 @@ local CoreGui = game:GetService("CoreGui")
 local UserInputService = game:GetService("UserInputService")
 local player = game.Players.LocalPlayer
 
-if CoreGui:FindFirstChild("MainGui") then
+if CoreGui:FindFirstChild("LeftControlGUI") then
     return
 end
 
@@ -59,23 +59,22 @@ local L2 = Instance.new("TextButton")
 local L3 = Instance.new("UICorner")
 local sound = Instance.new("Sound")
 
--- Thiết lập GUI
-L1.Name = "MainGui"
+L1.Name = "LeftControlGUI"
 L1.Parent = CoreGui
 L1.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
-L2.Name = "CustomButton"
+L2.Name = "LeftControlButton"
 L2.Parent = L1
-L2.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+L2.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 L2.BackgroundTransparency = 0.2
 L2.BorderSizePixel = 0
-L2.Position = UDim2.new(0.1208, 0, 0.0953, 0)
-L2.Size = UDim2.new(0, 50, 0, 50)
+L2.Position = UDim2.new(0.05, 0, 0.9, 0)
+L2.Size = UDim2.new(0, 80, 0, 40)
 L2.Font = Enum.Font.LuckiestGuy
-L2.Text = "Ascended\nHub"
+L2.Text = "CTRL"
 L2.TextColor3 = Color3.fromRGB(255, 255, 255)
-L2.TextSize = 9.000
-L2.Draggable = true
+L2.TextSize = 12.000
+L2.Draggable = true -- Có thể kéo
 
 L3.Name = "UICorner"
 L3.Parent = L2
@@ -106,9 +105,11 @@ end
 
 local function activateLeftControl()
     waitForCharacter()
-    UserInputService:SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game)
-    task.wait(0.1)
-    UserInputService:SendKeyEvent(false, Enum.KeyCode.LeftControl, false, game)
+    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.LeftControl) then
+        UserInputService.InputEnded:Fire({ KeyCode = Enum.KeyCode.LeftControl })
+    else
+        UserInputService.InputBegan:Fire({ KeyCode = Enum.KeyCode.LeftControl })
+    end
     sound:Play()
 end
 
