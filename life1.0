@@ -2411,13 +2411,31 @@ Tabs.MiscTab:AddToggle("Toggle", {
 local Section = Tabs.PlayerTab:AddSection("Player Utilities")
 
 local function updatePlayerList()
-    local players = {}
-    for _, player in pairs(game.Players:GetPlayers()) do
-        if player.Name ~= game.Players.LocalPlayer.Name then
-            table.insert(players, player.Name)
-        end
+    local newPlayerList = {}
+    for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+        table.insert(newPlayerList, player.Name)
     end
-    return players
+    PlayerList = newPlayerList
+
+game.Players.PlayerAdded:Connect(function()
+    PlayerList = updatePlayerList()
+    Dropdown.Values = PlayerList
+end)
+
+game.Players.PlayerRemoving:Connect(function()
+    PlayerList = updatePlayerList()
+    Dropdown.Values = PlayerList
+end)
+
+Tabs.PlayerTab:AddButton({
+    Title = "Refresh Player List",
+    Callback = function()
+        updatePlayerList()
+    end
+})
+    if MultiDropdown then
+        MultiDropdown:Refresh(PlayerList)
+    end
 end
 
 local PlayerList = updatePlayerList()
