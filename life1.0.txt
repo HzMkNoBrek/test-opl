@@ -3211,6 +3211,19 @@ local QuantitySlider = Tabs.WebHookTab:AddSlider("Slider", {
     end,
 })
 
+Tabs.PlayerTab:AddButton({
+    Title = "Refresh Player List",
+    Description = "Làm mới danh sách người chơi ngay lập tức!",
+    Callback = function()
+        local newPlayerList = {}
+        for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+            table.insert(newPlayerList, player.Name)
+        end
+        PlayerList = newPlayerList
+        MultiDropdown:Refresh(PlayerList)
+    end
+})
+
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -3236,18 +3249,6 @@ Fluent:Notify({
     Duration = 4
 })
 
-Tabs.PlayerTab:AddButton({
-    Title = "Refresh Player List",
-    Description = "Làm mới danh sách người chơi ngay lập tức!",
-    Callback = function()
-        local newPlayerList = {}
-        for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
-            table.insert(newPlayerList, player.Name)
-        end
-        PlayerList = newPlayerList
-        MultiDropdown:Refresh(PlayerList)
-    end
-})
 
 -- You can use the SaveManager:LoadAutoloadConfig() to load a config
 -- which has been marked to be one that auto loads!
