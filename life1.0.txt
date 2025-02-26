@@ -1,5 +1,4 @@
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-
 local Window = Fluent:CreateWindow({
     Title = "Water Hub -- OPL | Premium | " .. Fluent.Version,
     SubTitle = "      by Cai ",
@@ -9,6 +8,10 @@ local Window = Fluent:CreateWindow({
     Theme = "Normal Theme",
     MinimizeKey = Enum.KeyCode.LeftControl
 })
+
+if not Window then
+    warn("⚠ Lỗi: Fluent GUI Window chưa được khởi tạo!")
+end
 
 -- Cache para configurações
 local Cache = {
@@ -114,18 +117,9 @@ end
 
 L2.Activated:Connect(function()
     if not dragging then
-        if not isCharacterLoaded() then
-            player.CharacterAdded:Wait() -- Chờ nhân vật hồi sinh nếu chưa load
-        end
-        task.wait(0.1)
-        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game)
+        Window:Toggle()
         sound:Play()
     end
-end)
-
-player.CharacterAdded:Connect(function()
-    task.wait(1)
-    L2.Parent = L1
 end)
 
 local Section = Tabs.MainTab:AddSection("Main Utilities")
