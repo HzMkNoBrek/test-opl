@@ -63,7 +63,7 @@ L4.Position = UDim2.new(0.1, 0, 0.1, 0)
 L4.Size = UDim2.new(0, 45, 0, 45)
 L4.Image = ""
 L1.Name = "MainGui"
-L1.Parent = player:WaitForChild("PlayerGui")
+L1.Parent = game:GetService("CoreGui")
 L1.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 L2.Name = "CustomButton"
 L2.Parent = L1
@@ -79,9 +79,26 @@ L2.TextSize = 9.000
 L2.Draggable = true
 sound.Parent = L2
 sound.SoundId = "rbxassetid://965305329"
-L2.MouseButton1Click:Connect(function()
-    game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game)
-    sound:Play()
+local UserInputService = game:GetService("UserInputService")
+local dragging = false
+
+L2.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+    end
+end)
+
+L2.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = false
+    end
+end)
+
+L2.Activated:Connect(function()  -- Hoạt động cho cả chuột và cảm ứng
+    if not dragging then  
+        game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game)
+        sound:Play()
+    end
 end)
 
 local Section = Tabs.MainTab:AddSection("Main Utilities")
