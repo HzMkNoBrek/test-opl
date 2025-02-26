@@ -2429,13 +2429,25 @@ Tabs.MiscTab:AddToggle("Toggle", {
 local Section = Tabs.PlayerTab:AddSection("Player Utilities")
 
 local function updatePlayerList()
-    local players = {}
-    for _, player in pairs(game.Players:GetPlayers()) do
-        if player.Name ~= game.Players.LocalPlayer.Name then
-            table.insert(players, player.Name)
-        end
+    local newPlayerList = {}
+    for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+        table.insert(newPlayerList, player.Name)
     end
-    return players
+    PlayerList = newPlayerList
+
+    -- Nếu dropdown đã tồn tại, cập nhật danh sách
+    if MultiDropdown then
+        MultiDropdown:SetValues(newPlayerList) -- ✅ Cập nhật danh sách đúng cách
+    else
+        MultiDropdown = Tabs.PlayerTab:AddDropdown({
+            Title = "Select Player",
+            Values = newPlayerList,
+            Multi = false,
+            Callback = function(value)
+                print("Selected Player: " .. value)
+            end
+        })
+    end
 end
 
 local PlayerList = updatePlayerList()
@@ -2453,19 +2465,12 @@ local Dropdown = Tabs.PlayerTab:AddDropdown("Dropdown", {
     end
 })
 
-game.Players.PlayerAdded:Connect(function(player)
-    table.insert(PlayerList, player.Name)
-    Dropdown:Refresh(PlayerList, PlayerList[1] or "")
+game.Players.PlayerAdded:Connect(function()
+    updatePlayerList()
 end)
 
-game.Players.PlayerRemoving:Connect(function(player)
-    for i, name in ipairs(PlayerList) do
-        if name == player.Name then
-            table.remove(PlayerList, i)
-            break
-        end
-    end
-    Dropdown:Refresh(PlayerList, PlayerList[1] or "")
+game.Players.PlayerRemoving:Connect(function()
+    updatePlayerList()
 end)
 
 local Tpplr = false
