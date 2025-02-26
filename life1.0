@@ -104,21 +104,9 @@ local function waitForCharacter()
     end
 end
 
-local function activateLeftControl()
-    waitForCharacter()
-    if game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.LeftControl) then
-        UserInputService.InputEnded:Fire({ KeyCode = Enum.KeyCode.LeftControl })
-    else
-        UserInputService.InputBegan:Fire({ KeyCode = Enum.KeyCode.LeftControl })
-    end
+L2.MouseButton1Click:Connect(function()
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game)
     sound:Play()
-end
-
-L2.Activated:Connect(function()
-    if not dragging then
-        Window:Toggle()
-        sound:Play()
-    end
 end)
 
 local Section = Tabs.MainTab:AddSection("Main Utilities")
