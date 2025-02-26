@@ -3220,7 +3220,17 @@ Tabs.PlayerTab:AddButton({
             table.insert(newPlayerList, player.Name)
         end
         PlayerList = newPlayerList
-        MultiDropdown:Refresh(PlayerList)
+        
+        -- Xóa dropdown cũ và tạo dropdown mới với danh sách đã cập nhật
+        if MultiDropdown then MultiDropdown:Remove() end
+        MultiDropdown = Tabs.PlayerTab:AddDropdown({
+            Title = "Select Player",
+            Values = PlayerList,
+            Multi = false,
+            Callback = function(value)
+                print("Selected Player: " .. value)
+            end
+        })
     end
 })
 
