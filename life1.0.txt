@@ -117,7 +117,12 @@ end
 
 L2.Activated:Connect(function()
     if not dragging then
-        Window:Toggle()
+        if Window then
+            Window:Toggle()
+            print("Đã bật/tắt GUI") -- Debug kiểm tra GUI có hiện hay không
+        else
+            warn("⚠ Lỗi: Fluent Window chưa được khởi tạo!")
+        end
         sound:Play()
     end
 end)
@@ -3219,19 +3224,21 @@ Tabs.PlayerTab:AddButton({
         for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
             table.insert(newPlayerList, player.Name)
         end
-
+        PlayerList = newPlayerList
+        
+        -- Nếu MultiDropdown đã tồn tại, cập nhật danh sách
         if MultiDropdown then
-            MultiDropdown:Destroy()
+            MultiDropdown:SetValues(newPlayerList)
+        else
+            MultiDropdown = Tabs.PlayerTab:AddDropdown({
+                Title = "Select Player",
+                Values = newPlayerList,
+                Multi = false,
+                Callback = function(value)
+                    print("Selected Player: " .. value)
+                end
+            })
         end
-
-        MultiDropdown = Tabs.PlayerTab:AddDropdown({
-            Title = "Select Player",
-            Values = newPlayerList,
-            Multi = false,
-            Callback = function(value)
-                print("Selected Player: " .. value)
-            end
-        })
     end
 })
 
