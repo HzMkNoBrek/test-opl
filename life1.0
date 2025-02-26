@@ -115,13 +115,9 @@ end
 
 L2.Activated:Connect(function()
     if not dragging then
-        activateLeftControl()
+        Window:Toggle()
+        sound:Play()
     end
-end)
-
-player.CharacterAdded:Connect(function()
-    task.wait(1)
-    L2.Parent = L1
 end)
 
 local Section = Tabs.MainTab:AddSection("Main Utilities")
